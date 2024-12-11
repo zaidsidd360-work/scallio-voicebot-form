@@ -8,7 +8,6 @@ import {
 	Briefcase,
 	Send,
 } from "lucide-react";
-import Retell from "retell-sdk";
 import Airtable from "airtable";
 
 interface FormData {
@@ -29,10 +28,6 @@ const FormComponent: React.FC = () => {
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const client = new Retell({
-		apiKey: import.meta.env.VITE_APP_RETELL_KEY,
-	});
-
 	const base = new Airtable({
 		apiKey: import.meta.env.VITE_APP_AIRTABLE_KEY,
 	}).base(import.meta.env.VITE_APP_DB_ID || "");
@@ -46,6 +41,20 @@ const FormComponent: React.FC = () => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		const { phone, name, email, industry } = formData;
+
+		const url = "https://api.retellai.com/v2/create-phone-call";
+
+		const body = {
+			from_number: "+12192688290",
+			to_number: `+91${phone}`,
+			override_agent_id: "agent_b4a388b92a796df4906e41cbd2",
+			retell_llm_dynamic_variables: {
+				customer_name: name,
+				phone: phone,
+				email: email,
+				business_name: industry,
+			},
+		};
 
 		// Validate required fields
 		if (
@@ -92,18 +101,28 @@ const FormComponent: React.FC = () => {
 					records?.forEach((record) => console.log(record.getId()))
 			);
 
-			const phoneCallResponse = await client.call.createPhoneCall({
-				from_number: "+12192688290",
-				to_number: `+91${phone}`,
-				override_agent_id: "agent_b4a388b92a796df4906e41cbd2",
-				retell_llm_dynamic_variables: {
-					customer_name: name,
-					phone: phone,
-					email: email,
-					business_name: industry,
+			// const phoneCallResponse = await client.call.createPhoneCall({
+			// 	from_number: "+12192688290",
+			// 	to_number: `+91${phone}`,
+			// 	override_agent_id: "agent_b4a388b92a796df4906e41cbd2",
+			// 	retell_llm_dynamic_variables: {
+			// 		customer_name: name,
+			// 		phone: phone,
+			// 		email: email,
+			// 		business_name: industry,
+			// 	},
+			// });
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${
+						import.meta.env.VITE_APP_RETELL_KEY
+					}`,
+					"Content-Type": "application/json",
 				},
+				body: JSON.stringify(body),
 			});
-			console.log(phoneCallResponse.agent_id);
+			console.log(response);
 			setIsSubmitted(true);
 		} catch (error) {
 			console.error("Submission failed:", error);
@@ -135,7 +154,7 @@ const FormComponent: React.FC = () => {
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
 					<label
-						className="block text-gray-700 font-medium mb-1 flex items-center gap-2"
+						className=" text-gray-700 font-medium mb-1 flex items-center gap-2"
 						htmlFor="name"
 					>
 						<User className="w-4 h-4 text-[#f68b24]" />
@@ -153,7 +172,7 @@ const FormComponent: React.FC = () => {
 				</div>
 				<div>
 					<label
-						className="block text-gray-700 font-medium mb-1 flex items-center gap-2"
+						className=" text-gray-700 font-medium mb-1 flex items-center gap-2"
 						htmlFor="email"
 					>
 						<Mail className="w-4 h-4 text-[#f68b24]" />
@@ -171,7 +190,7 @@ const FormComponent: React.FC = () => {
 				</div>
 				<div>
 					<label
-						className="block text-gray-700 font-medium mb-1 flex items-center gap-2"
+						className=" text-gray-700 font-medium mb-1 flex items-center gap-2"
 						htmlFor="phone"
 					>
 						<Phone className="w-4 h-4 text-[#f68b24]" />
@@ -189,7 +208,7 @@ const FormComponent: React.FC = () => {
 				</div>
 				<div>
 					<label
-						className="block text-gray-700 font-medium mb-1 flex items-center gap-2"
+						className=" text-gray-700 font-medium mb-1 flex items-center gap-2"
 						htmlFor="industry"
 					>
 						<Briefcase className="w-4 h-4 text-[#f68b24]" />
