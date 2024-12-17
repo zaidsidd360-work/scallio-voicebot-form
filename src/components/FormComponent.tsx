@@ -151,7 +151,7 @@ const FormComponent: React.FC = () => {
 
 	return (
 		<div className="w-full max-w-2xl h-full mx-auto mt-10 bg-white shadow-lg rounded-lg border border-gray-300 p-6">
-			<h1 className="text-2xl font-bold text-center mb-6 text-[#f68b24]">
+			<h1 className="text-3xl font-bold text-center mb-6 text-[#f68b24]">
 				Receive a Phone call from Scallio AI agent
 			</h1>
 			<form onSubmit={handleSubmit} className="space-y-4">
@@ -169,7 +169,7 @@ const FormComponent: React.FC = () => {
 						name="name"
 						value={formData.name}
 						onChange={handleChange}
-						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24]"
+						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24] text-lg font-bold"
 						required
 					/>
 				</div>
@@ -187,7 +187,7 @@ const FormComponent: React.FC = () => {
 						name="email"
 						value={formData.email}
 						onChange={handleChange}
-						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24]"
+						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24] text-lg font-bold"
 						required
 					/>
 				</div>
@@ -207,7 +207,7 @@ const FormComponent: React.FC = () => {
 							name="phone"
 							value={formData.phone}
 							onChange={handleChange}
-							className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24]"
+							className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24] text-lg font-bold"
 							required
 						/>
 					</div>
@@ -226,7 +226,7 @@ const FormComponent: React.FC = () => {
 						name="industry"
 						value={formData.industry}
 						onChange={handleChange}
-						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24]"
+						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24] text-lg font-bold"
 						required
 					/>
 				</div>
@@ -235,7 +235,7 @@ const FormComponent: React.FC = () => {
 				)}
 				<button
 					type="submit"
-					className="w-full bg-[#f68b24] text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 disabled:opacity-50"
+					className="w-full bg-[#f68b24] text-white py-3 px-4 rounded-md flex items-center justify-center gap-2 disabled:opacity-50 text-lg font-bold"
 					disabled={isSubmitting}
 				>
 					{isSubmitting ? (
@@ -246,7 +246,7 @@ const FormComponent: React.FC = () => {
 					) : (
 						<>
 							<Send className="w-5 h-5" />
-							Submit
+							Start Call In My Number
 						</>
 					)}
 				</button>
