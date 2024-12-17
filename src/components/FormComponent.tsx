@@ -9,6 +9,7 @@ import {
 	Send,
 } from "lucide-react";
 import Airtable from "airtable";
+import CountryCodeSelector from "./CountryCodeSelector";
 
 interface FormData {
 	name: string;
@@ -27,6 +28,7 @@ const FormComponent: React.FC = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [countryCode, setCountryCode] = useState<string>("+1");
 
 	const base = new Airtable({
 		apiKey: import.meta.env.VITE_APP_AIRTABLE_KEY,
@@ -46,7 +48,7 @@ const FormComponent: React.FC = () => {
 
 		const body = {
 			from_number: "+12192688290",
-			to_number: `+91${phone}`,
+			to_number: `${countryCode}${phone}`,
 			// Change this to new agent ID
 			override_agent_id: "agent_b4a388b92a796df4906e41cbd2",
 			retell_llm_dynamic_variables: {
@@ -195,17 +197,20 @@ const FormComponent: React.FC = () => {
 						htmlFor="phone"
 					>
 						<Phone className="w-4 h-4 text-[#f68b24]" />
-						Phone Number <span className="text-red-500">*</span>
+						Phone <span className="text-red-500">*</span>
 					</label>
-					<input
-						type="tel"
-						id="phone"
-						name="phone"
-						value={formData.phone}
-						onChange={handleChange}
-						className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24]"
-						required
-					/>
+					<div className="flex items-center gap-2">
+						<CountryCodeSelector onChange={setCountryCode} />
+						<input
+							type="tel"
+							id="phone"
+							name="phone"
+							value={formData.phone}
+							onChange={handleChange}
+							className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#f68b24]"
+							required
+						/>
+					</div>
 				</div>
 				<div>
 					<label
